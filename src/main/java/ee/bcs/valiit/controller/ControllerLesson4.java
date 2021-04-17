@@ -71,27 +71,22 @@ public class ControllerLesson4 {
            return "Ülekanne ebaõnnestus, kuna ülekantav amount polnud positiivne";
        }
   }
-/*
-    //http://localhost:8080/withdrawMoney/EE456/40
+
+    //http://localhost:8080/withdrawMoney/EE019/40
     @PutMapping("withdrawMoney/{accountNr}/{amount}")
     public String withdrawMoney(@PathVariable("accountNr") String accountNr,
                                 @PathVariable("amount") double amount) {
-        if (amount > 0) {
-            double balance = accountBalanceMap.get(accountNr);
-            if (amount < 0) {
-                return "Not enough money";
-            } else {
-                balance -= amount;
-                accountBalanceMap.put(accountNr, balance);
-                return amount + "withdraw from account " + accountNr + ". New balance is " + balance;
-            }
-
-        } else {
-            return "Invalid amount";
-        }
+        Double balance = getBalance(accountNr);
+        balance = balance - amount;
+        String sql = "Update account set balance = :dbBalance WHERE account_number = :dbAccountNr";
+        Map<String, Object> paraMap = new HashMap<>();
+        paraMap.put("dbAccountNr", accountNr);
+        paraMap.put("dbBalance", balance);
+        jdbcTemplate.update(sql, paraMap);
+        return "Uus kontojääk on " + balance;
     }
-
-    //http://localhosT:8080/transferMoney/EE456/10/EE123
+/*
+    //http://localhosT:8080/transferMoney/EE019/10/EE123
     @PutMapping("transferMoney/{fromAccount}/{amount}/{toAccount}")
     public String transferMoney(@PathVariable("fromAccount") String fromAccount,
                                 @PathVariable("amount") double amount,
@@ -106,7 +101,5 @@ public class ControllerLesson4 {
     }
 
  */
-
-
 }
 
