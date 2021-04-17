@@ -4,94 +4,110 @@ import ee.bcs.valiit.klassid.BankAccountData;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class Lesson5 {
-    private static HashMap<String, BankAccountData> accountBalanceMap = new HashMap<>();
+    private static HashMap<String, BankAccountData> accountNumberBankAccountDataMap = new HashMap<>();
 
     public static void main(String[] args) {
 
     }
-/*
-    // http://localhost:8080/createAccount/Kelly/EE123/100
-    @GetMapping("createAccount/{ownerName}/{accountNr/{balance}")
-    public void createAccount(@RequestParam("ownerName") String ownerName,
-                              @PathVariable("accountNr") String accountNr,
-                              @PathVariable("balance") Double balance) {
+
+    // http://localhost:8080/createAccount2/Kelly/EE123/100/true
+    @PostMapping("createAccount2/{ownerName}/{accountNr}/{balance}/{locked}")
+    public String createAccount(@PathVariable("ownerName") String ownerName,
+                                @PathVariable("accountNr") String accountNr,
+                                @PathVariable("balance") Double balance,
+                                @PathVariable("locked") Boolean locked) {
         BankAccountData account = new BankAccountData();
         account.setOwnerName(ownerName);
         account.setAccountNumber(accountNr);
         account.setBalance(balance);
-        accountBalanceMap.put(accountNr, balance);
-    }
-
-    // http://localhost:8080/createAccount/EE456/100
-    @PostMapping("createAccount/{accountNr}/{balance}")
-    public void createAccount(@PathVariable("accountNr") String accountNr,
-                              @PathVariable("balance") Double balance) {
-        accountBalanceMap.put(accountNr, balance);
-    }
-
-    // http://localhost:8080/bank/account
-    /*@PostMapping("bank/account")
-    public void createAccount2(@RequestBody CreateAccount request) {
-        accountBalanceMap.put(request.getAccountNumber(), request.getAmount());
+        account.setLocked(locked);
+        accountNumberBankAccountDataMap.put(accountNr, account);
+        return "Mapis on " + accountNumberBankAccountDataMap.size();
     }
 
 
-
-    // http://localhost:8080/balance/EE456
-    @GetMapping("balance/{accountNumber}")
-    public String getBalance(@PathVariable("accountNumber") String accountNr) {
-        return "Your balance is: " + accountBalanceMap.get(accountNr);
+    // http://localhost:8080/balance2/EE123
+    @GetMapping("balance2/{accountNumber}")
+    public Double getBalance(@PathVariable("accountNumber") String accountNr) {
+        return accountNumberBankAccountDataMap.get(accountNr).getBalance();
     }
 
-    // http://localhost:8080/deposit/EE456/500
-    @PutMapping("deposit/{depositMoney}/{amount}")
+    // http://localhost:8080/deposit2/EE123/500
+    @PutMapping("deposit2/{depositMoney}/{amount}")
     public String deposit(@PathVariable("depositMoney") String accountNr,
                           @PathVariable("amount") double amount) {
-        double depositAmount = 0;
-        if (amount > 0) {
-            depositAmount = accountBalanceMap.get(accountNr) + amount;
-            accountBalanceMap.put(accountNr, depositAmount);
+        BankAccountData account = accountNumberBankAccountDataMap.get(accountNr);
+        if (account.isBlocked) {
+            return "Raha lisamine ebaõnnestus, sest konto on kinni";
         }
-        return "Your balance of" + accountNr + " is " + depositAmount;
+        Double balance = account.getBalance();
+        if (amount > 0) {
+            balance = balance + amount;
+            account.setBalance(balance);
+            return "Uus kontojääk on " + account.getBalance();
+        } else {
+            return "Raha lisamine kontoleebaõnnestus, kuna ülekantav amount polnud positiivne";
+        }
     }
 
-    //http://localhost:8080/withdrawMoney/EE456/40
-    @PutMapping("withdrawMoney/{accountNr}/{amount}")
+    @PutMapping("lockAccount/{accountNr}")
+    public String lockAccount(@PathVariable("accountNr") String accountNr) {
+        BankAccountData account = accountNumberBankAccountDataMap.get(accountNr);
+        if (account.isBlocked) {
+            return "Kasutaja lukustamine ebaõnnestus, sest kasutaja on lukustatud";
+        } else {
+            account.setLocked(true);
+            return "Kasutaja lukustamine õnnestus";
+        }
+    }
+
+    @PutMapping("unlockAccount/{accountNr}")
+    public String unlockAccount(@PathVariable("accountNr") String accountNr) {
+        BankAccountData account = accountNumberBankAccountDataMap.get(accountNr);
+        if (account.isBlocked) {
+            account.setLocked(true);
+            return "Kasutaja avamine õnnestus";
+        } else {
+            return "Kasutaja avamine ebaõnnestus, sest kasutaja on avatud";
+        }
+    }
+
+    //http://localhost:8080/withdrawMoney2/EE456/40
+    @PutMapping("withdrawMoney2/{accountNr}/{amount}")
     public String withdrawMoney(@PathVariable("accountNr") String accountNr,
                                 @PathVariable("amount") double amount) {
+        BankAccountData account = accountNumberBankAccountDataMap.get(accountNr); // kontot küsin konto numbri järgi
+        if (account.isBlocked) {
+            return "Raha eemaldamine ebaõnnestus, sest konto on lukus";
+        }
+        Double balance = account.getBalance();
         if (amount > 0) {
-            double balance = accountBalanceMap.get(accountNr);
-            if (amount < 0) {
-                return "Not enough money";
-            } else {
-                balance -= amount;
-                accountBalanceMap.put(accountNr, balance);
-                return amount + "withdraw from account " + accountNr + ". New balance is " + balance;
-            }
-
+            balance = balance - amount;
+            account.setBalance(balance);
+            return "Uus kontojääk on " + account.getBalance();
         } else {
-            return "Invalid amount";
+            return "Raha eemaldamine ebaõnnestus, kuna amount on negatiivne";
         }
     }
 
-    //http://localhosT:8080/transferMoney/EE456/10/EE123
-    @PutMapping("transferMoney/{fromAccount}/{amount}/{toAccount}")
+    //http://localhosT:8080/transferMoney2/EE456/10/EE123
+    @PutMapping("transferMoney2/{fromAccount}/{amount}/{toAccount}")
     public String transferMoney(@PathVariable("fromAccount") String fromAccount,
                                 @PathVariable("amount") double amount,
                                 @PathVariable("toAccount") String toAccount) {
-        if (amount > 0 && amount <= accountBalanceMap.get(fromAccount)) {
-            double newFromBalance = accountBalanceMap.get(fromAccount) - amount;
-            double newToBalance = accountBalanceMap.get(toAccount) + amount;
-            accountBalanceMap.put(fromAccount, newFromBalance);
-            accountBalanceMap.put(toAccount, newToBalance);
+        BankAccountData accountFrom = accountNumberBankAccountDataMap.get(fromAccount);
+        BankAccountData accountTo = accountNumberBankAccountDataMap.get(toAccount);
+        if (accountFrom.isBlocked || accountTo.isBlocked) {
+            return "Tehing ebaõnnestus, sest üks või mõlemad kontod on lukus";
         }
+        withdrawMoney(fromAccount, amount);
+        deposit(toAccount, amount);
         return "You have transferred from " + fromAccount + " to " + toAccount + amount + " EUR.";
     }
-
- */
 
     // TODO täienda oma BankControllerit nii, et sa hoiad Map-is konto balanssi asemel konto objekti
     //  1)

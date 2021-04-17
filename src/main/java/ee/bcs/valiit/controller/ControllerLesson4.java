@@ -85,21 +85,15 @@ public class ControllerLesson4 {
         jdbcTemplate.update(sql, paraMap);
         return "Uus kontojääk on " + balance;
     }
-/*
+
     //http://localhosT:8080/transferMoney/EE019/10/EE123
     @PutMapping("transferMoney/{fromAccount}/{amount}/{toAccount}")
     public String transferMoney(@PathVariable("fromAccount") String fromAccount,
                                 @PathVariable("amount") double amount,
                                 @PathVariable("toAccount") String toAccount) {
-        if (amount > 0 && amount <= accountBalanceMap.get(fromAccount)) {
-            double newFromBalance = accountBalanceMap.get(fromAccount) - amount;
-            double newToBalance = accountBalanceMap.get(toAccount) + amount;
-            accountBalanceMap.put(fromAccount, newFromBalance);
-            accountBalanceMap.put(toAccount, newToBalance);
-        }
+        withdrawMoney(fromAccount, amount);
+        deposit(toAccount, amount);
         return "You have transferred from " + fromAccount + " to " + toAccount + amount + " EUR.";
     }
-
- */
 }
 
