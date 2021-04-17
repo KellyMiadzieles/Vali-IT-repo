@@ -6,6 +6,7 @@ public class Lesson2Solution {
         multiplyTable(5, 5);
     }
 
+
     // TODO loe funktsiooni sisendiks on täisarvude massiiv
     // TODO tagasta massiiv mille elemendid on vastupidises järiekorras
     public static int[] reverseArray(int[] inputArray) {

@@ -9,7 +9,7 @@ import java.util.Map;
 
 @RestController
 public class SampleBankController {
-    private static Map<String, SampleAccount> accountBalanceMap = new HashMap<>();
+    //private static Map<String, SampleAccount> accountBalanceMap = new HashMap<>();
 
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
@@ -97,7 +97,7 @@ public class SampleBankController {
         String sql = "SELECT balance FROM account WHERE account_number = :dbAccNo";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("dbAccNo", accountNr);
-        Double balance = jdbcTemplate.queryForObject(sql, paramMap, Double.class);
+        Double balance = jdbcTemplate.queryForObject(sql, paramMap, Double.class); //query tähendab pärima
         return "Konto balanss on: " + balance;
     }
 
