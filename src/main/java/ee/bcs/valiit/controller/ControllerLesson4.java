@@ -15,6 +15,8 @@ public class ControllerLesson4 {
     @Autowired
     private NamedParameterJdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private BankService bankService;
 
     public static void main(String[] args) {
     }
@@ -23,21 +25,12 @@ public class ControllerLesson4 {
     @PostMapping("createAccount/{firstName}/{lastName}/{accountNr}/{balance}")
     public void createAccount(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @PathVariable("accountNr") String accountNr,
                               @PathVariable("balance") Double balance) {
-        String sql = "INSERT INTO account (id, first_name, last_name, account_number, balance) VALUES (:dbId,:dbFirstName,:dbLastName, :dbAccountNr, :dbAmount)";
-        Map<String, Object> paramMap = new HashMap<>();
-        Integer id = ThreadLocalRandom.current().nextInt(1, 1000 + 1); //annab ise automaatselt id numbri
-        paramMap.put("dbId", id); //salvestab mapi id numbri
-        paramMap.put("dbFirstName", firstName);
-        paramMap.put("dbLastName", lastName);
-        paramMap.put("dbAccountNr", accountNr);
-        paramMap.put("dbAmount", balance);
-        //paramMap.put(dbIsBlocked", blocked);
-        jdbcTemplate.update(sql, paramMap);
+        bankService.createAccount(firstName, lastName, accountNr, balance);
 
     }
 
 
-    // http://localhost:8080/bank/account
+    // http://localhost:8080/bank/account NÄIDE
     /*@PostMapping("bank/account")
     public void createAccount2(@RequestBody CreateAccount request) {
         accountBalanceMap.put(request.getAccountNumber(), request.getAmount());
@@ -48,11 +41,7 @@ public class ControllerLesson4 {
     // http://localhost:8080/balance/EE019
     @GetMapping("balance/{accountNumber}")
     public Double getBalance(@PathVariable("accountNumber") String accountNr) {
-        String sql = "SELECT balance FROM account where account_number = :dbAccountNr";
-        Map<String, Object> paramMap = new HashMap<>();
-        paramMap.put("dbAccountNr", accountNr);
-        Double balance = jdbcTemplate.queryForObject(sql, paramMap, Double.class);
-        return balance;
+        return bankService.getBalance(accountNr);
     }
     /*
     //http://localhost:8080/lockAccount2/EE456
@@ -81,7 +70,10 @@ public class ControllerLesson4 {
     @PutMapping("deposit/{accountNr}/{amount}")
     public String deposit(@PathVariable("accountNr") String accountNr,
                           @PathVariable("amount") Double amount) {
-        Double balance = getBalance(accountNr);
+        return bankService.deposit(accountNr, amount);
+    }
+    /*
+    Double balance = getBalance(accountNr);
         if (amount > 0) {
             balance = balance + amount;
             String sql = "UPDATE account SET balance = :dbBalance WHERE account_number = :dbAccountNr";
@@ -93,7 +85,7 @@ public class ControllerLesson4 {
         } else {
             return "Ülekanne ebaõnnestus, kuna ülekantav amount polnud positiivne";
         }
-    }
+     */
 
     //http://localhost:8080/withdrawMoney/EE019/40
     @PutMapping("withdrawMoney/{accountNr}/{amount}")
