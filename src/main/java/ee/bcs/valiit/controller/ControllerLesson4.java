@@ -54,25 +54,7 @@ public class ControllerLesson4 {
         Double balance = jdbcTemplate.queryForObject(sql, paramMap, Double.class);
         return balance;
     }
-
-    // http://localhost:8080/deposit/EE019/500
-    @PutMapping("deposit/{accountNr}/{amount}")
-    public String deposit(@PathVariable("accountNr") String accountNr,
-                          @PathVariable("amount") Double amount) {
-        Double balance = getBalance(accountNr);
-        if (amount > 0) {
-            balance = balance + amount;
-            String sql = "UPDATE account SET balance = :dbBalance WHERE account_number = :dbAccountNr";
-            Map<String, Object> paramMap = new HashMap<>();
-            paramMap.put("dbAccountNr", accountNr);
-            paramMap.put("dbBalance", balance);
-            jdbcTemplate.update(sql, paramMap);
-            return "Uus kontojääk on " + balance;
-        } else {
-            return "Ülekanne ebaõnnestus, kuna ülekantav amount polnud positiivne";
-        }
-    }
-/*
+    /*
     //http://localhost:8080/lockAccount2/EE456
     @PutMapping("lockAccount2/{accountNr}")
     public String lockAccount2(@PathVariable("accountNr") String accountNr) {
@@ -93,6 +75,25 @@ public class ControllerLesson4 {
     }
 
  */
+
+
+    // http://localhost:8080/deposit/EE019/500
+    @PutMapping("deposit/{accountNr}/{amount}")
+    public String deposit(@PathVariable("accountNr") String accountNr,
+                          @PathVariable("amount") Double amount) {
+        Double balance = getBalance(accountNr);
+        if (amount > 0) {
+            balance = balance + amount;
+            String sql = "UPDATE account SET balance = :dbBalance WHERE account_number = :dbAccountNr";
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("dbAccountNr", accountNr);
+            paramMap.put("dbBalance", balance);
+            jdbcTemplate.update(sql, paramMap);
+            return "Uus kontojääk on " + balance;
+        } else {
+            return "Ülekanne ebaõnnestus, kuna ülekantav amount polnud positiivne";
+        }
+    }
 
     //http://localhost:8080/withdrawMoney/EE019/40
     @PutMapping("withdrawMoney/{accountNr}/{amount}")
