@@ -149,6 +149,21 @@ public class TestController {
     public Employee dtoTest2(@RequestBody Employee employee) {
         return employee;
     }
+    @GetMappint("bank/account") VAJA TEHA KA UUS ERALDI KLASS koos getteri setteritega, võib teha ka inner classi (teise klassi sees)
+    public List<Account> getAllAccounts(){
+    String sql = "SELECT * FROM account";
+    return jdbcTemplate.query(sql, new HashMap(), new  A);
+
+    (new jaoks vaja teha eraldi klass rowMapper, misimplementdib rowmapperi,
+    ResultsSet peame konverteerima enda objektiks. On vaja tagastada nt Account2 tüüpi objketi
+    response.setAccountNR(resultSet.getString(acolumnLacel"account_NR"); tagasta mulle stringina mis oli tulbas nimega account number)
+    response.setbalance(resultSet.getDouble(columnLabel "balance")));
+    response.setId();  -- Väärtused saame resultSeti käest
+    resultSet.getObject("block", LocalDate.class);  (KUI TAHTA KUUPÄEVA LISADA).
+    json saab vaadata, et tagastab listi, kus on kõik andmed
+
+    Solution ja controlleris on õpetaja näide olemas
+
 
      */
 

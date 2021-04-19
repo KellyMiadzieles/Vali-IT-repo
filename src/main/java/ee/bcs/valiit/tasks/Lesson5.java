@@ -14,7 +14,7 @@ public class Lesson5 {
 
     }
 
-    // http://localhost:8080/createAccount2/Kelly/EE123/100/true
+    // http://localhost:8080/createAccount2/Mari/EE456/100/true
     @PostMapping("createAccount2/{ownerName}/{accountNr}/{balance}/{locked}")
     public String createAccount(@PathVariable("ownerName") String ownerName,
                                 @PathVariable("accountNr") String accountNr,
@@ -30,13 +30,13 @@ public class Lesson5 {
     }
 
 
-    // http://localhost:8080/balance2/EE123
+    // http://localhost:8080/balance2/EE456
     @GetMapping("balance2/{accountNumber}")
     public Double getBalance(@PathVariable("accountNumber") String accountNr) {
         return accountNumberBankAccountDataMap.get(accountNr).getBalance();
     }
 
-    // http://localhost:8080/deposit2/EE123/500
+    // http://localhost:8080/deposit2/EE456/500
     @PutMapping("deposit2/{depositMoney}/{amount}")
     public String deposit(@PathVariable("depositMoney") String accountNr,
                           @PathVariable("amount") double amount) {
@@ -53,7 +53,7 @@ public class Lesson5 {
             return "Raha lisamine kontoleebaõnnestus, kuna ülekantav amount polnud positiivne";
         }
     }
-
+    //http://localhost:8080/lockAccount/EE456
     @PutMapping("lockAccount/{accountNr}")
     public String lockAccount(@PathVariable("accountNr") String accountNr) {
         BankAccountData account = accountNumberBankAccountDataMap.get(accountNr);
@@ -64,7 +64,7 @@ public class Lesson5 {
             return "Kasutaja lukustamine õnnestus";
         }
     }
-
+    //http://localhost:8080/unlockAccount/EE456
     @PutMapping("unlockAccount/{accountNr}")
     public String unlockAccount(@PathVariable("accountNr") String accountNr) {
         BankAccountData account = accountNumberBankAccountDataMap.get(accountNr);
