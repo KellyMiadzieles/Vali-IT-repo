@@ -1,13 +1,10 @@
-package ee.bcs.valiit.controller;
+package ee.bcs.valiit.bank;
 
+import ee.bcs.valiit.bank.BankService;
+import ee.bcs.valiit.klassid.BankAccountData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import javax.websocket.server.PathParam;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 public class ControllerLesson4 {
@@ -29,21 +26,56 @@ public class ControllerLesson4 {
 
     }
 
-
-    // http://localhost:8080/bank/account NÄIDE
-    /*@PostMapping("bank/account")
-    public void createAccount2(@RequestBody CreateAccount request) {
-        accountBalanceMap.put(request.getAccountNumber(), request.getAmount());
-    }
-
-     */
-
     // http://localhost:8080/balance/EE019
     @GetMapping("balance/{accountNumber}")
     public Double getBalance(@PathVariable("accountNumber") String accountNr) {
         return bankService.getBalance(accountNr);
     }
+
+    // http://localhost:8080/deposit/EE019/500
+    @PutMapping("deposit/{accountNr}/{amount}")
+    public String deposit(@PathVariable("accountNr") String accountNr,
+                          @PathVariable("amount") Double amount) {
+        return bankService.deposit(accountNr, amount);
+    }
+
+    //http://localhost:8080/withdrawMoney/EE019/40
+    @PutMapping("withdrawMoney/{accountNr}/{amount}")
+    public String withdrawMoney(@PathVariable("accountNr") String accountNr,
+                                @PathVariable("amount") Double amount) {
+        return bankService.withdrawMoney(accountNr, amount);
+    }
+
+    //http://localhosT:8080/transferMoney/EE019/10/EE123
+    @PutMapping("transferMoney/{fromAccount}/{amount}/{toAccount}")
+    public void transferMoney(@PathVariable("fromAccount") String fromAccount,
+                              @PathVariable("amount") Double amount,
+                              @PathVariable("toAccount") String toAccount) {
+        bankService.transferMoney(fromAccount, amount, toAccount);
+    }
+}
+    //return "You have transferred from " + fromAccount + " to " + toAccount + amount + " EUR.";
+
     /*
+    public String transferMoney(@PathVariable("fromAccount") String fromAccount,
+                                @PathVariable("amount") Double amount,
+                                @PathVariable("toAccount") String toAccount) {
+        withdrawMoney(fromAccount, amount);
+        deposit(toAccount, amount);
+        return "You have transferred from " + fromAccount + " to " + toAccount + amount + " EUR.";
+    }
+
+
+     */
+    /*
+
+
+    // http://localhost:8080/bank/account NÄIDE REQUESTBODYGA
+    /*@PostMapping("bank/account")
+    public void createAccount2(@RequestBody CreateAccount request) {
+        accountBalanceMap.put(request.getAccountNumber(), request.getAmount());
+    }
+
     //http://localhost:8080/lockAccount2/EE456
     @PutMapping("lockAccount2/{accountNr}")
     public String lockAccount2(@PathVariable("accountNr") String accountNr) {
@@ -62,17 +94,6 @@ public class ControllerLesson4 {
         jdbcTemplate.update(sql, paramMap);
         return accountNr + "is unlocked";
     }
-
- */
-
-
-    // http://localhost:8080/deposit/EE019/500
-    @PutMapping("deposit/{accountNr}/{amount}")
-    public String deposit(@PathVariable("accountNr") String accountNr,
-                          @PathVariable("amount") Double amount) {
-        return bankService.deposit(accountNr, amount);
-    }
-    /*
     Double balance = getBalance(accountNr);
         if (amount > 0) {
             balance = balance + amount;
@@ -85,11 +106,7 @@ public class ControllerLesson4 {
         } else {
             return "Ülekanne ebaõnnestus, kuna ülekantav amount polnud positiivne";
         }
-     */
-
-    //http://localhost:8080/withdrawMoney/EE019/40
-    @PutMapping("withdrawMoney/{accountNr}/{amount}")
-    public String withdrawMoney(@PathVariable("accountNr") String accountNr,
+            public String withdrawMoney(@PathVariable("accountNr") String accountNr,
                                 @PathVariable("amount") Double amount) {
         Double balance = getBalance(accountNr);
         balance = balance - amount;
@@ -99,19 +116,9 @@ public class ControllerLesson4 {
         paramMap.put("dbBalance", balance);
         jdbcTemplate.update(sql, paramMap);
         return "Uus kontojääk on " + balance;
-    }
+ */
 
-    //http://localhosT:8080/transferMoney/EE019/10/EE123
-    @PutMapping("transferMoney/{fromAccount}/{amount}/{toAccount}")
-    public String transferMoney(@PathVariable("fromAccount") String fromAccount,
-                                @PathVariable("amount") Double amount,
-                                @PathVariable("toAccount") String toAccount) {
-        withdrawMoney(fromAccount, amount);
-        deposit(toAccount, amount);
-        return "You have transferred from " + fromAccount + " to " + toAccount + amount + " EUR.";
-    }
-}
-/*
+    /*
     kui teha RequestBody, kus on vaja teha iga muutuja jaoks eraldi objekt
     static  muutuja või funktsioon kuulub klassile (kui meil palju objekte, mis jagavad ühte klassi, kui ütlen muutuale et static, siis kõik objektid jagavad staticut) mitte objektile
  */

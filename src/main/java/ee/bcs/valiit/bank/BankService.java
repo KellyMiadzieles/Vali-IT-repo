@@ -1,8 +1,7 @@
-package ee.bcs.valiit.controller;
+package ee.bcs.valiit.bank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class BankService {
@@ -21,10 +20,24 @@ public class BankService {
         Double balance = getBalance(accountNr);
         if (amount > 0) {
             balance = balance + amount;
-            return bankAccountRepository.deposit(accountNr, amount);
+            return bankAccountRepository.updateBalance(accountNr, balance);
         } else {
             return "Ülekanne ebaõnnestus, kuna ülekantav amount polnud positiivne";
         }
     }
+
+    public String withdrawMoney(String accountNr, Double amount) {
+        Double balance = getBalance(accountNr);
+        balance = balance - amount;
+        return bankAccountRepository.updateBalance(accountNr, balance);
+        //return "Uus kontojääk on " + balance;
+    }
+
+    public void transferMoney(String fromAccount, Double amount, String toAccount) {
+        withdrawMoney(fromAccount, amount);
+        deposit(toAccount, amount);
+    }
 }
+
+
 
