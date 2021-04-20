@@ -1,4 +1,4 @@
-package ee.bcs.valiit.controller;
+package ee.bcs.valiit.bank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -31,9 +31,10 @@ public class BankAccountRepository {
         String sql = "SELECT balance FROM account where account_number = :dbAccountNr";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("dbAccountNr", accountNr);
-        return jdbcTemplate.queryForObject(sql, paramMap, Double.class);
+        return jdbcTemplate.queryForObject(sql, paramMap, Double.class); //SELECTI puhul on queryfor object
     }
-    public String deposit(String accountNr, Double amount) {
+
+    public String updateBalance(String accountNr, Double amount) {
         String sql = "UPDATE account SET balance = :dbBalance WHERE account_number = :dbAccountNr";
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("dbAccountNr", accountNr);
@@ -41,4 +42,5 @@ public class BankAccountRepository {
         Integer result = jdbcTemplate.update(sql, paramMap);
         return result.toString();
     }
+
 }
