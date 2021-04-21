@@ -14,6 +14,13 @@
             </column>
             <column name="balance" type="numeric"/>
         </createTable>
-    </changeSet>
 
+        <createTable tableName="transaction_history">
+            <column name="account_number" type="text"/>
+            <column name="balance" type="numeric"/>
+            <column name="deposit" type="numeric"/>
+            <column name="withdraw" type="numeric"/>
+            <column name="transfer" type="numeric"/>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
