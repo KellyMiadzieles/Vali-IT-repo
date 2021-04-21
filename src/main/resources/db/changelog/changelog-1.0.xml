@@ -4,33 +4,16 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="1" author="Siim">
-        <createTable tableName="author">
-            <column name="id" type="int" autoIncrement="true">
+    <changeSet id="2021-21-04" author="kelly">
+        <createTable tableName="account">
+            <column name="id" type="int"/>
+            <column name="first_name" type="text"/>
+            <column name="last_name" type="text"/>
+            <column name="account_number" type="text">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="name" type="text"/>
+            <column name="balance" type="numeric"/>
         </createTable>
+    </changeSet>
 
-        <createTable tableName="book">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="description" type="text"/>
-            <column name="name" type="text"/>
-            <column name="author_id" type="int">
-                <constraints foreignKeyName="fk_book_author" references="author(id)"/>
-            </column>
-        </createTable>
-    </changeSet>
-    <changeSet id="2020-01-26 add employee" author="Siim Rebane">
-        <createTable tableName="employee">
-            <column name="id" type="int" autoIncrement="true">
-                <constraints primaryKey="true"/>
-            </column>
-            <column name="name" type="text"/>
-            <column name="address" type="text"/>
-            <column name="phone" type="text"/>
-        </createTable>
-    </changeSet>
 </databaseChangeLog>
