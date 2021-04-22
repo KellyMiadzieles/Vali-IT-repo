@@ -1,5 +1,6 @@
 package ee.bcs.valiit.bank;
 
+import ee.bcs.valiit.solution.exception.SampleApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,22 +19,31 @@ public class BankService {
 
     public String deposit(String accountNr, Double amount) {
         Double balance = getBalance(accountNr);
-        if (amount > 0) {
-            balance = balance + amount;
-            return bankAccountRepository.updateBalance(accountNr, balance);
-        } else {
-            return "Ülekanne ebaõnnestus, kuna ülekantav amount polnud positiivne";
+
+        if (amount < 0) {
+            throw new SampleApplicationException("Ülekanne ebaõnnestus, sest ülekantav summa polnud positiivne");
         }
+        balance = balance + amount;
+        return bankAccountRepository.updateBalance(accountNr, balance);
     }
 
     public String withdrawMoney(String accountNr, Double amount) {
         Double balance = getBalance(accountNr);
-        balance = balance - amount;
+        if (amount < 0) {
+            throw new SampleApplicationException("Kontol pole piisavalt raha");
+        }
+        if (balance < amount) {
+            throw new SampleApplicationException("Kontol pole piisavalt raha");
+        }
+            balance = balance - amount;
         return bankAccountRepository.updateBalance(accountNr, balance);
         //return "Uus kontojääk on " + balance;
     }
 
     public void transferMoney(String fromAccount, Double amount, String toAccount) {
+        if (amount < 0) {
+            throw new SampleApplicationException("Ülekannet ei saa teostada, kontol pole piisavalt raha");
+        }
         withdrawMoney(fromAccount, amount);
         deposit(toAccount, amount);
     }
