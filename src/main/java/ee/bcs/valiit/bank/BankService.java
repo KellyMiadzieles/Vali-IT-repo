@@ -9,6 +9,9 @@ public class BankService {
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    @Autowired
+    private AccountRepository accountRepository;
+
     public void createAccount(String firstName, String lastName, String accountNr, Double balance) {
         bankAccountRepository.createAccount(firstName, lastName, accountNr, balance);
     }
