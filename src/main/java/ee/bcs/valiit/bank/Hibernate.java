@@ -1,18 +1,19 @@
 package ee.bcs.valiit.bank;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
 @Table(name="account")
-@Entity
+@Entity //seotud andmebaasiga
 public class Hibernate {
 
         @Id
+        //juhul kui on auto increment id tulp
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Integer id;
         private String firstName;
         private String lastName;
-        private String accountNumber;
-        private Integer balance;
+        private String accountNumber; //andmebaasis peab olema tulba nimi account_number
+        private Double balance;
 
         public Integer getId() {
                 return id;
@@ -46,11 +47,11 @@ public class Hibernate {
                 this.accountNumber = accountNumber;
         }
 
-        public Integer getBalance() {
+        public Double getBalance() {
                 return balance;
         }
 
-        public void setBalance(Integer balance) {
+        public void setBalance(Double balance) {
                 this.balance = balance;
         }
 }

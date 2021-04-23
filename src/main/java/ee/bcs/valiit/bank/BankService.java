@@ -17,7 +17,9 @@ public class BankService {
     }
 
     public Double getBalance(String accountNr) {
-        return bankAccountRepository.getBalance(accountNr);
+
+        //return bankAccountRepository.getBalance(accountNr);
+        return accountRepository.getOne(accountNr).getBalance();
     }
 
     public String deposit(String accountNr, Double amount) {
@@ -28,7 +30,6 @@ public class BankService {
         }
         balance = balance + amount;
         return bankAccountRepository.updateBalance(accountNr, balance);
-       // return accountRepository.
     }
 
     public String withdrawMoney(String accountNr, Double amount) {
