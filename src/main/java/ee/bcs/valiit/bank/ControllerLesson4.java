@@ -19,20 +19,23 @@ public class ControllerLesson4 {
     }
 
     // http://localhost:8080/createAccount/tiit/mari/EE019/100
+    @CrossOrigin
     @PostMapping("createAccount/{firstName}/{lastName}/{accountNr}/{balance}")
-    public void createAccount(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @PathVariable("accountNr") String accountNr,
+    public String createAccount(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @PathVariable("accountNr") String accountNr,
                               @PathVariable("balance") Double balance) {
         bankService.createAccount(firstName, lastName, accountNr, balance);
-
+        return "You created successfully an account: first name: " + firstName + ", last name: "+ lastName + ", account number: " + accountNr + ", balance: " + balance;
     }
 
     // http://localhost:8080/balance/EE019
+    @CrossOrigin
     @GetMapping("balance/{accountNumber}")
-    public Double getBalance(@PathVariable("accountNumber") String accountNr) {
-        return bankService.getBalance(accountNr);
+    public String getBalance(@PathVariable("accountNumber") String accountNr) {
+        return bankService.getBalance2(accountNr);
     }
 
     // http://localhost:8080/deposit/EE019/500
+    @CrossOrigin
     @PutMapping("deposit/{accountNr}/{amount}")
     public String deposit(@PathVariable("accountNr") String accountNr,
                           @PathVariable("amount") Double amount) {
@@ -40,6 +43,7 @@ public class ControllerLesson4 {
     }
 
     //http://localhost:8080/withdrawMoney/EE019/40
+    @CrossOrigin
     @PutMapping("withdrawMoney/{accountNr}/{amount}")
     public String withdrawMoney(@PathVariable("accountNr") String accountNr,
                                 @PathVariable("amount") Double amount) {
@@ -47,12 +51,28 @@ public class ControllerLesson4 {
     }
 
     //http://localhosT:8080/transferMoney/EE019/10/EE123
+    @CrossOrigin
     @PutMapping("transferMoney/{fromAccount}/{amount}/{toAccount}")
-    public void transferMoney(@PathVariable("fromAccount") String fromAccount,
+    public String transferMoney(@PathVariable("fromAccount") String fromAccount,
                               @PathVariable("amount") Double amount,
                               @PathVariable("toAccount") String toAccount) {
-        bankService.transferMoney(fromAccount, amount, toAccount);
+        return bankService.transferMoney(fromAccount, amount, toAccount);
     }
+ /*   //http://localhost:8080/lockAccount2/EE456
+    @PutMapping("lockAccount2/{accountNr}")
+    public String lockAccount2(@PathVariable("accountNr") String accountNr) {
+        return bankService.lockAccount(accountNr);
+    }
+
+    @PutMapping("unlockAccount2/{accountNr}")
+    public String unlockAccount2(@PathVariable("accountNr") String accountNr) {
+        String sql = "UPDATE account SET isBlocked = 'false' WHERE account_number = :dbAccountNr";
+        Map <String, Object> paramMap = new HashMap<>();
+        paramMap.put("dbAccountNr", accountNr);
+        jdbcTemplate.update(sql, paramMap);
+        return accountNr + "is unlocked";
+
+  */
 }
     //return "You have transferred from " + fromAccount + " to " + toAccount + amount + " EUR.";
 

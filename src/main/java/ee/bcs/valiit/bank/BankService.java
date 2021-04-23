@@ -15,11 +15,12 @@ public class BankService {
     public void createAccount(String firstName, String lastName, String accountNr, Double balance) {
         bankAccountRepository.createAccount(firstName, lastName, accountNr, balance);
     }
-
-    public Double getBalance(String accountNr) {
-
-        //return bankAccountRepository.getBalance(accountNr);
-        return accountRepository.getOne(accountNr).getBalance();
+    public String getBalance2(String accountNr) {
+        return "Your balance is " + getBalance(accountNr);
+    }
+    private Double getBalance(String accountNr) {
+        return bankAccountRepository.getBalance(accountNr);
+        //return accountRepository.getOne(accountNr).getBalance();
     }
 
     public String deposit(String accountNr, Double amount) {
@@ -29,7 +30,8 @@ public class BankService {
             throw new SampleApplicationException("Ülekanne ebaõnnestus, sest ülekantav summa polnud positiivne");
         }
         balance = balance + amount;
-        return bankAccountRepository.updateBalance(accountNr, balance);
+        bankAccountRepository.updateBalance(accountNr, balance);
+        return "Your new account balance is " + balance;
     }
 
     public String withdrawMoney(String accountNr, Double amount) {
@@ -41,17 +43,44 @@ public class BankService {
             throw new SampleApplicationException("Kontol pole piisavalt raha");
         }
             balance = balance - amount;
-        return bankAccountRepository.updateBalance(accountNr, balance);
+        bankAccountRepository.updateBalance(accountNr, balance);
+        return "Your new account balance is " + balance;
         //return "Uus kontojääk on " + balance;
     }
 
-    public void transferMoney(String fromAccount, Double amount, String toAccount) {
+    public String transferMoney(String fromAccount, Double amount, String toAccount) {
         if (amount < 0) {
             throw new SampleApplicationException("Ülekannet ei saa teostada, kontol pole piisavalt raha");
         }
         withdrawMoney(fromAccount, amount);
         deposit(toAccount, amount);
+        return "Your new account balance is " + getBalance(fromAccount);
+
     }
+  /*  public Boolean isLocked(String accountNr) {
+        return bankAccountRepository.isLocked(accountNr);
+    }
+    public String lockAccount2(String accountNr) {
+        Boolean locked = isLocked(accountNr);
+        if (locked){
+            return "Kasutaja lukustamine ebaõnnestus, sest kasutaja on lukustatud";
+        } else {
+            bankAccountRepository.updateIsLocked(accountNr);
+            return "Kasutaja lukustamine õnnestus";
+        }
+    }
+    public String unLockAccount2(String accountNr){
+        Boolean locked = isLocked(accountNr);
+        if (locked) {
+            account.setLocked(true);
+            return "Kasutaja avamine õnnestus";
+        } else {
+            return "Kasutaja avamine ebaõnnestus, sest kasutaja on avatud";
+        }
+        bankAccountRepository.updateIsLocked(accountNr);
+    }
+
+   */
 }
 
 

@@ -42,5 +42,18 @@ public class BankAccountRepository {
         Integer result = jdbcTemplate.update(sql, paramMap);
         return result.toString();
     }
+  /*  public Boolean isLocked(String accountNr) {
+        String sql = "SELECT isLocked FROM account where account_number = :dbAccountNr";
+        Map<String, Object> paramMap = new HashMap<>();
+        paramMap.put("dbAccountNr", accountNr);
+        return jdbcTemplate.queryForObject(sql, paramMap, Boolean.class); //SELECTI puhul on queryfor object
+    }
+    public Integer updateIsLocked(String accountNr) {
+        String sql = "UPDATE account SET isBlocked = 'true' WHERE account_number = :dbAccountNr";
+        Map<String, Object> paraMap = new HashMap<>();
+        paraMap.put("dbAccountNr", accountNr);
+        return jdbcTemplate.update(sql, paraMap);
+    }
 
+   */
 }
