@@ -7,7 +7,8 @@
         body {
             background-color: #fffdfd;
         }
-        button{
+
+        button {
             width: 130px;
             padding: 10px 0;
             text-align: center;
@@ -19,13 +20,14 @@
             cursor: pointer;
             position: relative;
         }
+
         p.test1 {
             color: #ff8400;
         }
     </style>
 </head>
 <body>
-<h1 style="color:#ff8400">Welcome to Your Bank</h1>
+<h1 style="color:#ff8400">Welcome to Your Bank!</h1>
 
 <br>
 <br>
@@ -45,109 +47,135 @@
     </tr>
 </table>
 <button id="createAccountButton">Create account</button>
+<p>
+    Account: <span id="createdAccount"></span>
+</p>
 <br>
 <br>
 <p class="test1">TRANSACTIONS</p>
 <br>
 <p class="test1">Get Balance</p>
-Account number <input id="accountNr" type="text"/><button id="getBalanceButton">Get balance</button>
+Account number <input id="accountNr" type="text"/>
+<button id="getBalanceButton">Get balance</button>
+<p>
+   Balance: <span id="balanceAnswer"></span>
+</p>
 <br>
 <p class="test1">Deposit Money</p>
-Account number <input id="depositAccountNum" type="text"/> Amount <input id="depositAmount" type="text"/><button id="depositMoneyButton">Deposit Money</button>
+Account number <input id="depositAccountNum" type="text"/> Amount <input id="depositAmount" type="text"/>
+<button id="depositMoneyButton">Deposit Money</button>
+<p>
+    Updated balance: <span id="updatedBalance"></span>
+</p>
 <br>
 <p class="test1">Withdraw Money</p>
-Account number <input id="withdrawAccountNum" type="text"/> Amount <input id="withdrawAmount" type="text"/><button id="withdrawMoneyButton">Withdraw Money</button>
+Account number <input id="withdrawAccountNum" type="text"/> Amount <input id="withdrawAmount" type="text"/>
+<button id="withdrawMoneyButton">Withdraw Money</button>
+<p>
+    Updated balance: <span id="withdrawUpdatedBalance"></span>
+</p>
 <br>
 <p class="test1">Transfer Money</p>
-Account from <input id="transferFromAccount" type="text"/> Account to <input id="transferToAccount"type="text"/> Amount <input id="transferAmount" type="text"/><button id="transferMoneyButton">Transfer Money</button>
-    <script>
-        let firstName = document.getElementById("firstName");
-        let lastName = document.getElementById("lastName");
-        let accountNumber = document.getElementById("accountNumber");
-        let balance = document.getElementById("balance");
-        let createAccountButton = document.getElementById("createAccountButton");
-        createAccountButton.onclick = function(){
-            let url = "http://localhost:8080/createAccount/" + firstName.value + "/" + lastName.value + "/" + accountNumber.value + "/" + balance.value;
-            let configuration = {
-                method: 'POST',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }
-            fetch(url, configuration)
-                .then(response => response.text())
-                .then(function(response){
-                    alert(response)
-                })
+Account from <input id="transferFromAccount" type="text"/> Account to <input id="transferToAccount" type="text"/> Amount
+<input id="transferAmount" type="text"/>
+<button id="transferMoneyButton">Transfer Money</button>
+<p>
+    Updated balance: <span id="transferUpdatedBalance"></span>
+</p>
+<script>
+    let firstName = document.getElementById("firstName");
+    let lastName = document.getElementById("lastName");
+    let accountNumber = document.getElementById("accountNumber");
+    let balance = document.getElementById("balance");
+    let createdAccount = document.getElementById("createdAccount");
+    let createAccountButton = document.getElementById("createAccountButton");
+    createAccountButton.onclick = function () {
+        let url = "http://localhost:8080/createAccount/" + firstName.value + "/" + lastName.value + "/" + accountNumber.value + "/" + balance.value;
+        let configuration = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json"
+            },
         }
-        let accountNr = document.getElementById("accountNr");
-        let getBalanceButton = document.getElementById("getBalanceButton");
-        getBalanceButton.onclick = function () {
-            let url = "http://localhost:8080/balance/" + accountNr.value;
-            let configuration = {
-                method: 'GET',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }
-            fetch(url, configuration)
-                .then(response => response.text())
-                .then(function(response){
-                    alert(response)
-                })
+        fetch(url, configuration)
+            .then(response => response.text())
+            .then(text => {
+                createdAccount.innerText = text
+            })
+    }
+    let accountNr = document.getElementById("accountNr");
+    let getBalanceButton = document.getElementById("getBalanceButton");
+    let balanceAnswer = document.getElementById("balanceAnswer");
+    getBalanceButton.onclick = function () {
+        let url = "http://localhost:8080/balance/" + accountNr.value;
+        let configuration = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json"
+            },
         }
-        let depositAccountNum = document.getElementById("depositAccountNum");
-        let depositAmount = document.getElementById("depositAmount");
-        let depositMoneyButton = document.getElementById("depositMoneyButton");
-        depositMoneyButton.onclick = function () {
-            let url = "http://localhost:8080/deposit/" + depositAccountNum.value + "/" + depositAmount.value;
-            let configuration = {
-                method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }
-            fetch(url, configuration)
-                .then(response => response.text())
-                .then(function (response) {
-                    alert(response)
-                })
+        fetch(url, configuration)
+            .then(response => response.text())
+            .then(text => {
+                balanceAnswer.innerText = text
+            })
+    }
+    let depositAccountNum = document.getElementById("depositAccountNum");
+    let depositAmount = document.getElementById("depositAmount");
+    let depositMoneyButton = document.getElementById("depositMoneyButton");
+    let updatedBalance = document.getElementById("updatedBalance");
+    depositMoneyButton.onclick = function () {
+        let url = "http://localhost:8080/deposit/" + depositAccountNum.value + "/" + depositAmount.value;
+        let configuration = {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
         }
-        let withdrawAccountNum = document.getElementById("withdrawAccountNum");
-        let withdrawAmount = document.getElementById("withdrawAmount");
-        let withdrawMoneyButton = document.getElementById("withdrawMoneyButton");
-        withdrawMoneyButton.onclick = function () {
-            let url = "http://localhost:8080/withdrawMoney/" + withdrawAccountNum.value + "/" + withdrawAmount.value;
-            let configuration = {
-                method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }
-            fetch(url, configuration)
-                .then(response => response.text())
-                .then(function (response) {
-                    alert(response)
-                })
+        fetch(url, configuration)
+            .then(response => response.text())
+            .then(text => {
+            updatedBalance.innerText = text
+            })
+    }
+    let withdrawAccountNum = document.getElementById("withdrawAccountNum");
+    let withdrawAmount = document.getElementById("withdrawAmount");
+    let withdrawMoneyButton = document.getElementById("withdrawMoneyButton");
+    let withdrawUpdatedBalance = document.getElementById("withdrawUpdatedBalance")
+    withdrawMoneyButton.onclick = function () {
+        let url = "http://localhost:8080/withdrawMoney/" + withdrawAccountNum.value + "/" + withdrawAmount.value;
+        let configuration = {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
         }
-        let transferFromAccount = document.getElementById("transferFromAccount");
-        let transferToAccount = document.getElementById("transferToAccount");
-        let transferAmount = document.getElementById("transferAmount");
-        let transferMoneyButton = document.getElementById("transferMoneyButton");
-        transferMoneyButton.onclick = function () {
-            let url = "http://localhost:8080/transferMoney/" + transferFromAccount.value + "/" + transferAmount.value + "/" + transferToAccount.value;
-            let configuration = {
-                method: 'PUT',
-                headers: {
-                    "Content-Type": "application/json"
-                },
-            }
-            fetch(url, configuration)
-                .then(response => response.text())
-                .then(function (response) {
-                    alert(response)
-                })
+        fetch(url, configuration)
+            .then(response => response.text())
+            .then(text => {
+                withdrawUpdatedBalance.innerText = text
+            })
+    }
+    let transferFromAccount = document.getElementById("transferFromAccount");
+    let transferToAccount = document.getElementById("transferToAccount");
+    let transferAmount = document.getElementById("transferAmount");
+    let transferUpdatedBalance = document.getElementById("transferUpdatedBalance");
+    let transferMoneyButton = document.getElementById("transferMoneyButton");
+    transferMoneyButton.onclick = function () {
+        let url = "http://localhost:8080/transferMoney/" + transferFromAccount.value + "/" + transferAmount.value + "/" + transferToAccount.value;
+        let configuration = {
+            method: 'PUT',
+            headers: {
+                "Content-Type": "application/json"
+            },
         }
-    </script>
+        fetch(url, configuration)
+            .then(response => response.text())
+            .then( text => {
+                transferUpdatedBalance.innerText = text
+            })
+    }
+</script>
+<h1 style="color:#ff8400">Have a nice day!</h1>
 </body>
 </html>
