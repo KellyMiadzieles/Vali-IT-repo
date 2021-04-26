@@ -7,10 +7,6 @@
         body {
             background-color: #fffdfd;
         }
-        body{
-            background-image: url("picture.jpg");
-            background-repeat: no-repeat;
-        }
 
         button {
             width: 130px;
@@ -31,11 +27,13 @@
     </style>
 </head>
 <body>
-<h1 style="color:#ff8400">Welcome to Your Bank!</h1>
+    <h1 style="color:#ff8400">Welcome to Your Bank!</h1>
 
 <br>
 <br>
-<p class="test1">CREATE ACCOUNT</p>
+<div class="jumbotron text-center">
+    <p class="test1">CREATE ACCOUNT</p>
+</div>
 <table border="1">
     <tr>
         <th>First name</th>
@@ -62,7 +60,7 @@
 Account number <input id="accountNr" type="text"/>
 <button id="getBalanceButton">Get balance</button>
 <p>
-   Balance: <span id="balanceAnswer"></span>
+    Balance: <span id="balanceAnswer"></span>
 </p>
 <br>
 <p class="test1">Deposit Money</p>
@@ -139,7 +137,7 @@ Account from <input id="transferFromAccount" type="text"/> Account to <input id=
         fetch(url, configuration)
             .then(response => response.text())
             .then(text => {
-            updatedBalance.innerText = text
+                updatedBalance.innerText = text
             })
     }
     let withdrawAccountNum = document.getElementById("withdrawAccountNum");
@@ -175,7 +173,7 @@ Account from <input id="transferFromAccount" type="text"/> Account to <input id=
         }
         fetch(url, configuration)
             .then(response => response.text())
-            .then( text => {
+            .then(text => {
                 transferUpdatedBalance.innerText = text
             })
     }
