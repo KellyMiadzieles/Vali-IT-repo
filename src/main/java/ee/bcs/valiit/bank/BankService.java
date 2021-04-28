@@ -2,12 +2,19 @@ package ee.bcs.valiit.bank;
 
 import ee.bcs.valiit.solution.exception.SampleApplicationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class BankService {
     @Autowired
     private BankAccountRepository bankAccountRepository;
+
+    @Autowired
+    private NamedParameterJdbcTemplate jdbcTemplate;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -57,6 +64,10 @@ public class BankService {
         return "Your new account balance is " + getBalance(fromAccount);
 
     }
+    public List<BankAccountDTO> getAllAccounts() {
+        return bankAccountRepository.getAllAccounts();
+    }
+
   /*  public Boolean isLocked(String accountNr) {
         return bankAccountRepository.isLocked(accountNr);
     }

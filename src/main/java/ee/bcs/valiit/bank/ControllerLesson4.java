@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 public class ControllerLesson4 {
 
@@ -58,6 +60,13 @@ public class ControllerLesson4 {
                               @PathVariable("toAccount") String toAccount) {
         return bankService.transferMoney(fromAccount, amount, toAccount);
     }
+
+    @CrossOrigin
+    @GetMapping("account")
+    public List<BankAccountDTO> getAllAccounts() {
+        return bankService.getAllAccounts();
+    }
+
  /*   //http://localhost:8080/lockAccount2/EE456
     @PutMapping("lockAccount2/{accountNr}")
     public String lockAccount2(@PathVariable("accountNr") String accountNr) {

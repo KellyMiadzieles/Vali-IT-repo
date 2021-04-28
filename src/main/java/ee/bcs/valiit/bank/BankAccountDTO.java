@@ -1,8 +1,9 @@
 package ee.bcs.valiit.bank;
 
 public class BankAccountDTO {
-    private String accountNr;
+    private String accountNumber;
     private Double balance;
+    
 
     public String getAccountNumber() {
         return accountNumber;

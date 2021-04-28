@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -42,6 +43,13 @@ public class BankAccountRepository {
         Integer result = jdbcTemplate.update(sql, paramMap);
         return result.toString();
     }
+
+    public List<BankAccountDTO> getAllAccounts() {
+        String sql = "SELECT * FROM account";
+
+        return jdbcTemplate.query(sql, new HashMap<>(), new AccountRowMapper());
+    }
+}
   /*  public Boolean isLocked(String accountNr) {
         String sql = "SELECT isLocked FROM account where account_number = :dbAccountNr";
         Map<String, Object> paramMap = new HashMap<>();
@@ -56,4 +64,4 @@ public class BankAccountRepository {
     }
 
    */
-}
+
