@@ -23,4 +23,12 @@
             <column name="transfer" type="numeric"/>
         </createTable>
     </changeSet>
+    <changeSet id="2021-29-04" author="kelly">
+        <createTable tableName="all_users">
+            <column name="username" type="text" autoIncrement="false">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="password" type="text" autoIncrement="false"/>
+    </createTable>
+    </changeSet>
 </databaseChangeLog>

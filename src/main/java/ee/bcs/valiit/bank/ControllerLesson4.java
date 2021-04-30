@@ -1,13 +1,12 @@
 package ee.bcs.valiit.bank;
 
-import ee.bcs.valiit.bank.BankService;
-import ee.bcs.valiit.klassid.BankAccountData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequestMapping("api")
 @RestController
 public class ControllerLesson4 {
 
@@ -20,7 +19,7 @@ public class ControllerLesson4 {
     public static void main(String[] args) {
     }
 
-    // http://localhost:8080/createAccount/tiit/mari/EE019/100
+    // http://localhost:8080/api/createAccount/tiit/mari/EE019/100
     @CrossOrigin
     @PostMapping("createAccount/{firstName}/{lastName}/{accountNr}/{balance}")
     public String createAccount(@PathVariable("firstName") String firstName, @PathVariable("lastName") String lastName, @PathVariable("accountNr") String accountNr,
@@ -29,14 +28,14 @@ public class ControllerLesson4 {
         return "You created successfully an account: first name: " + firstName + ", last name: "+ lastName + ", account number: " + accountNr + ", balance: " + balance;
     }
 
-    // http://localhost:8080/balance/EE019
+    // http://localhost:8080/api/balance/EE019
     @CrossOrigin
     @GetMapping("balance/{accountNumber}")
     public String getBalance(@PathVariable("accountNumber") String accountNr) {
         return bankService.getBalance2(accountNr);
     }
 
-    // http://localhost:8080/deposit/EE019/500
+    // http://localhost:8080/api/deposit/EE019/500
     @CrossOrigin
     @PutMapping("deposit/{accountNr}/{amount}")
     public String deposit(@PathVariable("accountNr") String accountNr,
@@ -44,7 +43,7 @@ public class ControllerLesson4 {
         return bankService.deposit(accountNr, amount);
     }
 
-    //http://localhost:8080/withdrawMoney/EE019/40
+    //http://localhost:8080/api/withdrawMoney/EE019/40
     @CrossOrigin
     @PutMapping("withdrawMoney/{accountNr}/{amount}")
     public String withdrawMoney(@PathVariable("accountNr") String accountNr,
@@ -52,7 +51,7 @@ public class ControllerLesson4 {
         return bankService.withdrawMoney(accountNr, amount);
     }
 
-    //http://localhosT:8080/transferMoney/EE019/10/EE123
+    //http://localhosT:8080/api/transferMoney/EE019/10/EE123
     @CrossOrigin
     @PutMapping("transferMoney/{fromAccount}/{amount}/{toAccount}")
     public String transferMoney(@PathVariable("fromAccount") String fromAccount,
