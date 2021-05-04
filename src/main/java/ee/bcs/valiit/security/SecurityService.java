@@ -23,7 +23,7 @@ public class SecurityService {
         securityRepository.getPasswordByUsername(loginRequest.getUsername());
         String password = securityRepository.getPasswordByUsername(loginRequest.getUsername());
         if (passwordEncoder.matches(loginRequest.getPassword(), password)) {
-            //loginRequest.getPassword().equals(loginRequest.getPassword())) {
+            //loginRequest.getPassword().equals(loginRequest.getPassword())) {esimene
             Date today = new Date();
             Date tokenExpirationDate = new Date(today.getTime() + 1000 * 60 * 60 * 24);
             JwtBuilder jwtBuilder = Jwts.builder()
