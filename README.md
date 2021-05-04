@@ -18,10 +18,10 @@
 **Liquibase**: https://drive.google.com/file/d/1NCgQCfaVX4PRSqk5oVYPD4xhkJhJsewc/view?usp=sharing  
 **Exceptions**:  
 **Hibernate, Spring Data**: https://drive.google.com/file/d/1eWV24l4MApKUK8S3d9s9NciMpFaTYjdT/view?usp=sharing    
+**Security**: https://drive.google.com/file/d/105CpgMW1lrLfVDRvNootiNYGuRcaN8iR/view?usp=sharing  
+**SQL 2**: https://drive.google.com/file/d/1zruh1n6XKl96AxLAEODKHAzcgbvdRZLe/view?usp=sharing  
 **Scheduled Tasks**:  
-**Testing**:  
-**Security**:  
-**JWT/Security**:  
+**Testing**:   
 **Transactions**:  
 ### HTML / CSS
 **HTML, CSS**: https://drive.google.com/file/d/1iSoZQu-qyF94MYtQVu1i10pYyM1-k664/view?usp=sharing  
